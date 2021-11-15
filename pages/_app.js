@@ -1,7 +1,18 @@
-import '../styles/globals.css'
+// setup your wrapper in the _app file (e.g: pages/_app.js)
+import { Chakra } from "../chakra"
+import Header from "../components/header/header";
+import { Box } from "@chakra-ui/layout";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function App({ Component, pageProps }) {
+    const headerHeight = "100px";
+    return (
+        <Chakra cookies={pageProps.cookies}>
+            <Header height={headerHeight} title="Jose Paulo Urives Rosa" subtitle="Full Stack Developer" />
+            <Box height={headerHeight}></Box>
+            <Component {...pageProps} />
+        </Chakra>
+    );
 }
 
-export default MyApp
+// re-export the reusable `getServerSideProps` function
+export { getServerSideProps } from "../chakra"
