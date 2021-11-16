@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@chakra-ui/button'
 import { useColorMode } from '@chakra-ui/color-mode'
 import { Link, Flex } from '@chakra-ui/layout';
+import { Collapse } from '@chakra-ui/transition';
 import { Img } from '@chakra-ui/image';
 import { List, ListItem, ListIcon, Heading, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode'
@@ -98,10 +99,12 @@ export default function Header(props) {
                 >
                     <HamburgerIcon />
                 </Button>
-
+                <Collapse in={isOpen} animateOpacity>
                 <List
                     display={[(isOpen ? "block" : "none"), (isOpen ? "block" : "none"), "none", "none"]}
                     flexBasis="70%"
+                    transitionProperty="display"
+                    transitionDuration="1s"
                     justifyContent="flex-end"
                     alignItems="center"
                     bg={bgColor}
@@ -144,6 +147,7 @@ export default function Header(props) {
                         ))
                     }
                 </List>
+                </Collapse>
             </Flex>
         </Flex>
     );

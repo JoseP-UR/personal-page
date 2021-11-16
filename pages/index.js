@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Container, Center, Heading, Text } from '@chakra-ui/layout'
+import { Container, Center, Heading, Text, Flex } from '@chakra-ui/layout'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 
 export default function Home() {
@@ -24,6 +24,19 @@ export default function Home() {
 
           <Text textAlign="center" paddingTop="1rem">
             Full Stack Developer
+          </Text>
+        </Container>
+      </Center>
+      <Center paddingTop="4rem">
+      <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
+          <Heading as="h1" size="2xl" textAlign="center" paddingTop="2rem">
+            About me 
+          </Heading>
+
+          <Text textAlign="center" paddingTop="1rem">
+            Hello , i'm a developer based in Brazil.
+            I'm passionate about development and I love to create things that make a difference.
+            I'm currently working as a full-stack developer and i'm always looking for new challenges.
           </Text>
         </Container>
       </Center>
