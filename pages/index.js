@@ -28,9 +28,9 @@ export default function Home() {
         </Container>
       </Center>
       <Center paddingTop="4rem">
-      <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
+        <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
           <Heading as="h1" size="2xl" textAlign="center" paddingTop="2rem">
-            About me 
+            About me
           </Heading>
 
           <Text textAlign="center" paddingTop="1rem">
