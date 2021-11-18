@@ -3,11 +3,18 @@ import { Img } from '@chakra-ui/image';
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { useState } from "react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import style from "./SlideShow.module.css";
 
 export default function SlideShow(props) {
     const bgColor = useColorModeValue('gray.200', 'gray.900')
     const fontColor = useColorModeValue('black', 'whiteAlpha.900')
     const [index, setIndex] = useState(0)
+
+    const interval = setInterval(() => {
+        let newIndex = (index == props.slides.length -1) ? 0 : index + 1
+        setIndex(newIndex)
+        clearInterval(this)
+    }, props.interval || 5000);
 
     return (
         <Container margin="auto" maxW="lg">
@@ -26,6 +33,8 @@ export default function SlideShow(props) {
                 maxHeight="40vh"
             >
                 <ArrowBackIcon
+                    flexBasis="5%"
+                    className={style.slideArrow}
                     onClick={() => {
                         if (index > 0) {
                             setIndex(index - 1)
@@ -39,10 +48,10 @@ export default function SlideShow(props) {
                     opacity={index === 0 ? 0.5 : 1}
                 />
                 <Box
-                    flexBasis="90%"
+                    flexBasis="80%"
                     key={index}
                     width="100%"
-                    maxWidth="500px"
+                    maxWidth="100%"
                     mx="auto"
                     p={4}
                     boxShadow="lg"
@@ -60,6 +69,8 @@ export default function SlideShow(props) {
                     <Text flexBasis="10%">{props.slides[index].description}</Text>
                 </Box>
                 <ArrowForwardIcon
+                    flexBasis="5%"
+                    className={style.slideArrow}
                     onClick={() => {
                         if (index < props.slides.length - 1) {
                             setIndex(index + 1)

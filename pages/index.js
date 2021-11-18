@@ -80,7 +80,7 @@ export default function Home() {
           </Text>
         </Container>
       </Center> */}
-      <SlideShow slides={slides} />
+      <SlideShow interval="5000" slides={slides} />
     </div>
   )
 }
