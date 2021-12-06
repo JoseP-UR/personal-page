@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import SlideShow from '../components/slideShow/slideShow'
+import SlideShow from '../components/slideShow'
 import { Container, Center, Heading, Text, Link } from '@chakra-ui/layout'
 import { useColorModeValue } from '@chakra-ui/color-mode'
 
@@ -13,17 +13,17 @@ export default function Home() {
       description: "I'm a developer based in Brazil.",
     },
     {
-      image: '/images/logo.png',
+      image: '/images/beggining.png',
       title: 'Beggining',
       description: 'I first started programming in the early 2000s, when I was a teenager.',
     },
     {
-      image: '/images/logo.png',
+      image: '/images/motivation.jpg',
       title: 'Motivation',
-      description: "I started by learning Visual Basic and C++, with the sole objective to make a cheat for a computer game, this awoke my interest in programming and i've been playing with computed code ever since.",
+      description: "I started by learning Visual Basic and C++, with the sole purpose to make cheats for a computer game. This awoke my interest in programming and i've been playing with computer code ever since.",
     },
     {
-      image: '/images/logo.png',
+      image: '/images/currently.jpg',
       title: 'Currently',
       description: (<span>I currently work as a full-stack developer at <Link href="https://www.neoassist.com/" target="_blank">NeoAssist</Link></span>),
     }
@@ -49,38 +49,10 @@ export default function Home() {
           </Text>
         </Container>
       </Center>
-          <Heading as="h1" size="2xl" textAlign="center" paddingTop="2rem">
-            About me
-          </Heading>
-      {/* <Center paddingTop="4rem">
-        <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
-          <Text textAlign="center" paddingTop="1rem">
-            I'm a developer based in Brazil.
-          </Text>
-        </Container>
-      </Center>
-      <Center paddingTop="4rem">
-        <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
-          <Text textAlign="center" paddingTop="1rem">
-            I first started programming in the early 2000s, when I was a teenager.
-          </Text>
-        </Container>
-      </Center>
-      <Center paddingTop="4rem">
-        <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
-          <Text textAlign="center" paddingTop="1rem">
-            I started by learning Visual Basic and C++, with the sole objective to make a cheat for a computer game, this awoke my interest in programming and i've been playing with computed code ever since.
-          </Text>
-        </Container>
-      </Center>
-      <Center paddingTop="4rem">
-        <Container width="lg" bg={bgColor} color={textColor} borderRadius="15px" paddingBottom="2rem">
-          <Text textAlign="center" paddingTop="1rem">
-            I currently work as a full-stack developer at <Link href="https://www.neoassist.com/" target="_blank">NeoAssist</Link> 
-          </Text>
-        </Container>
-      </Center> */}
-      <SlideShow interval="5000" slides={slides} />
+      <Heading as="h1" size="2xl" textAlign="center" paddingTop="2rem">
+        About me
+      </Heading>
+      <SlideShow id="about" interval="5000" slides={slides} />
     </div>
   )
 }

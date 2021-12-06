@@ -6,40 +6,36 @@ import { Collapse } from '@chakra-ui/transition';
 import { Img } from '@chakra-ui/image';
 import { List, ListItem, ListIcon, Heading, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode'
-import { MoonIcon, SunIcon, CheckCircleIcon, ArrowForwardIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import style from './header.module.css'
 import { useRouter } from 'next/dist/client/router';
 
 
 export default function Header(props) {
+    const { menuItems } = props
     const bgColor = useColorModeValue('gray.200', 'gray.900')
     const fontColor = useColorModeValue('black', 'whiteAlpha.900')
     const { colorMode, toggleColorMode } = useColorMode()
     const [isOpen, setIsOpen] = useState(false)
     const [hovered, setHovered] = useState('')
-    const router = useRouter();
+    const router = useRouter()
     const handleToggle = () => setIsOpen(!isOpen)
 
-    const menuItems = [
-        {
-            name: 'Home',
-            href: '/',
-            icon: router.pathname === '/' ? <CheckCircleIcon /> : <ArrowForwardIcon />
-        },
-        {
-            name: 'About',
-            href: '/about',
-            icon: router.pathname === '/about' ? <CheckCircleIcon /> : <ArrowForwardIcon />
-        },
-        {
-            name: 'Contact',
-            href: '/contact',
-            icon: router.pathname === '/contact' ? <CheckCircleIcon /> : <ArrowForwardIcon />
-        },
-    ];
+    const parseChildren = (item) => {
+        if (item.children && router.pathname === item.href) {
+            return item.children.map((child, index) => {
+                return (
+                <Link fontSize="0.9em" key={index} color={hovered === child.name ? '#fff' : fontColor} href={child.href}>
+                    <ListIcon marginRight="0.5rem">{child.icon}</ListIcon>
+                    {child.name}
+                </Link>
+                )
+            })
+        }
+    }
 
     return (
-        <Flex className="header" alignItems="center" height={props.height} boxShadow="base" position="fixed" width="100%" bg={bgColor}>
+        <Flex zIndex="10" className="header" alignItems="center" height={props.height} boxShadow="base" position="fixed" width="100%" bg={bgColor}>
             <Flex marginLeft="10px" flexBasis="30%">
                 <Link margin="auto" href="/" justifyContent="space-between">
                     <Img borderRadius="full" boxSize="70px" objectFit="cover" src="/images/logo.png" alt="Logo" />
@@ -68,10 +64,11 @@ export default function Header(props) {
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
+                            flexDirection="column"
                             fontSize="sm"
                             fontWeight="bold"
                             bg={hovered === item.name ? '#000' : 'transparent'}
-                            borderRadius="full"
+                            borderRadius="10px"
                             padding="0.5rem"
                             margin="0.5rem"
                         >
@@ -79,6 +76,7 @@ export default function Header(props) {
                                 <ListIcon marginRight="0.5rem">{item.icon}</ListIcon>
                                 {item.name}
                             </Link>
+                            {parseChildren(item)}
                         </ListItem>
                     ))
                 }
@@ -100,53 +98,53 @@ export default function Header(props) {
                     <HamburgerIcon />
                 </Button>
                 <Collapse in={isOpen} animateOpacity>
-                <List
-                    display={[(isOpen ? "block" : "none"), (isOpen ? "block" : "none"), "none", "none"]}
-                    flexBasis="70%"
-                    transitionProperty="display"
-                    transitionDuration="1s"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    bg={bgColor}
-                    color={fontColor}
-                    fontSize="sm"
-                    fontWeight="bold"
-                    borderRadius="20px"
-                    padding="0.5rem"
-                    margin="0.5rem"
-                    position="absolute"
-                    top="100%"
-                    left="0"
-                    right="0"
-                    zIndex="1"
-                    overflow="hidden"
-                    transition="all 0.3s ease-in-out"
-                >
-                    {
-                        menuItems.map((item, index) => (
-                            <ListItem
-                                key={index}
-                                onMouseEnter={() => setHovered(item.name)}
-                                onMouseLeave={() => setHovered('')}
-                                className={style.menuItem}
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                fontSize="sm"
-                                fontWeight="bold"
-                                bg={hovered === item.name ? '#000' : 'transparent'}
-                                borderRadius="full"
-                                padding="0.5rem"
-                                margin="0.5rem"
-                            >
-                                <Link color={hovered === item.name ? '#fff' : fontColor} href={item.href}>
-                                    <ListIcon marginRight="0.5rem">{item.icon}</ListIcon>
-                                    {item.name}
-                                </Link>
-                            </ListItem>
-                        ))
-                    }
-                </List>
+                    <List
+                        display={[(isOpen ? "block" : "none"), (isOpen ? "block" : "none"), "none", "none"]}
+                        flexBasis="70%"
+                        transitionProperty="display"
+                        transitionDuration="1s"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        bg={bgColor}
+                        color={fontColor}
+                        fontSize="sm"
+                        fontWeight="bold"
+                        borderRadius="20px"
+                        padding="0.5rem"
+                        margin="0.5rem"
+                        position="absolute"
+                        top="100%"
+                        left="0"
+                        right="0"
+                        zIndex="1"
+                        overflow="hidden"
+                        transition="all 0.3s ease-in-out"
+                    >
+                        {
+                            menuItems.map((item, index) => (
+                                <ListItem
+                                    key={index}
+                                    onMouseEnter={() => setHovered(item.name)}
+                                    onMouseLeave={() => setHovered('')}
+                                    className={style.menuItem}
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    fontSize="sm"
+                                    fontWeight="bold"
+                                    bg={hovered === item.name ? '#000' : 'transparent'}
+                                    borderRadius="full"
+                                    padding="0.5rem"
+                                    margin="0.5rem"
+                                >
+                                    <Link color={hovered === item.name ? '#fff' : fontColor} href={item.href}>
+                                        <ListIcon marginRight="0.5rem">{item.icon}</ListIcon>
+                                        {item.name}
+                                    </Link>
+                                </ListItem>
+                            ))
+                        }
+                    </List>
                 </Collapse>
             </Flex>
         </Flex>
