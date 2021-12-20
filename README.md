@@ -1,7 +1,11 @@
 This is a work in progress for a personal page (with a blog) made with the intent of learning several technologies.
+
 This project runs on nextjs, and uses chakra-ui and threejs.
+
 This is still a work in progress and has several incomplete and unoptimized sections.
+
 The blog will only fetch and list posts from the blog api, management and post creation will be done by a dashboard separated from this page.
+
 It will support comments in the future.
 
 ## Getting Started
