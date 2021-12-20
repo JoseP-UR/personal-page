@@ -22,13 +22,17 @@ export default function Header(props) {
     const handleToggle = () => setIsOpen(!isOpen)
 
     const parseChildren = (item) => {
-        if (item.children && router.pathname === item.href) {
+        if (item.children && router.pathname === item.path) {
             return item.children.map((child, index) => {
                 return (
-                <Link fontSize="0.9em" key={index} color={hovered === child.name ? '#fff' : fontColor} href={child.href}>
-                    <ListIcon marginRight="0.5rem">{child.icon}</ListIcon>
-                    {child.name}
-                </Link>
+                    <Link
+                        onMouseEnter={() => setHovered(item.name)}
+                        fontSize="0.9em" key={index}
+                        color={hovered === item.name ? '#fff' : fontColor}
+                        href={child.href}>
+                        <ListIcon marginRight="0.5rem">{child.icon}</ListIcon>
+                        {child.name}
+                    </Link>
                 )
             })
         }

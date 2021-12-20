@@ -19,21 +19,18 @@ export default function SlideShow(props) {
             x: 30 * (forward ? 1 : -1),
             transition: {
                 duration: 0.05,
-                // ease: "easeInOut",
             },
         }).then(() => {
             animationControls.start({
                 x: -30 * (forward ? 1 : -1),
                 transition: {
                     duration: 0.05,
-                    // ease: "easeInOut",
                 },
             }).then(() => {
                 animationControls.start({
                     x: 0,
                     transition: {
                         duration: 0.05,
-                        // ease: "easeInOut",
                     },
                 })
             })
@@ -117,20 +114,35 @@ export default function SlideShow(props) {
                             animate={animationControls}
                             initial={false}
                         >
-                            <Img
-                                marginTop="4rem"
-                                flexBasis="80%"
-                                src={slide.image}
-                                alt={slide.title}
-                                maxH="100vh"
-                                maxW="100vw"
-                                minW="50vw"
-                                minH="50vh"
-                                boxSize="70%"
-                                objectFit="contain"
-                                objectPosition="center"
-                                borderRadius="15px"
-                            />
+                            {
+                                (() => {
+                                    if (slide.html) {
+                                        return (<Box
+                                            marginTop="4rem"
+                                            flexBasis="80%"
+                                            maxH="60vh"
+                                            maxW="100vw"
+                                            minW="60vw"
+                                            minH="60vh"
+                                            borderRadius="15px">{slide.html}</Box>)
+                                    }
+                                    return <Img
+
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        maxH="50vh"
+                                        maxW="100vw"
+                                        minW="50vw"
+                                        minH="50vh"
+                                        boxSize="70%"
+                                        objectFit="contain"
+                                        objectPosition="center"
+                                        borderRadius="15px"
+                                    />
+
+                                })()
+                            }
+
                             <Heading
                                 flexBasis="10%"
                                 as="h1"

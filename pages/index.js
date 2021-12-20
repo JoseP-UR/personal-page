@@ -2,13 +2,79 @@ import Head from 'next/head'
 import SlideShow from '../components/slideShow'
 import { Container, Center, Heading, Text, Link } from '@chakra-ui/layout'
 import { useColorModeValue } from '@chakra-ui/color-mode'
+import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
+import { WEBGL } from 'three/examples/jsm/WebGL.js';
+import { useEffect, useRef } from 'react';
+import { render } from 'react-dom';
+
+
 
 export default function Home() {
+  let cube = useRef(null);
+  let renderer = useRef(null);
+  let scene = useRef(null);
+  let camera = useRef(null);
+  const animate = () => {
+    requestAnimationFrame(animate);
+    cube.current.rotation.x += 0.01;
+    cube.current.rotation.y += 0.01;
+    renderer.current.render(scene.current, camera.current);
+  };
+  const renderScene = () => {
+    scene.current = new Scene();
+    renderer.current = new WebGLRenderer();
+    const geometry = new BoxGeometry();
+    const material = new MeshBasicMaterial({ color: 0x00FFFF });
+    cube.current = new Mesh(geometry, material);
+    camera.current = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const element = document.getElementById('gltests');
+    scene.current.add(cube.current);
+
+    camera.current.position.z = 5;
+    renderer.current.setSize(window.innerWidth, window.innerHeight);
+    renderer.current.domElement.style.width = '100%';
+    renderer.current.domElement.style.height = '100%';
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+    element.appendChild(renderer.current.domElement);
+    renderer.current.render(scene.current, camera.current);
+    animate();
+  }
+
+  useEffect(renderScene, [])
+
+  let initialPosition = {x: 0, y: 0}
+  const drag = (e) => {
+    cube.current.rotation.x += (initialPosition.y - e.screenY) * 0.00001;
+    cube.current.rotation.y += (initialPosition.x - e.screenX) * 0.00001;
+    renderer.current.render(scene.current, camera.current);
+  }
+
+  let draggable = false
+  const toggleDrag = (direction) => {
+    const activated = direction === 'down'
+    return (e) => {
+      draggable = activated
+      console.log(draggable)
+
+      if (activated) {
+        initialPosition = { x: e.screenX, y: e.screenY }
+        window.addEventListener('mousemove', drag)
+        window.addEventListener('mouseup', upFunc)
+        return
+      }
+      window.removeEventListener('mouseup', upFunc)
+      window.removeEventListener('mousemove', drag)
+    }
+  }
+  const upFunc = toggleDrag('up') // this is terrible and i cant think of a better solution yet
   const bgColor = useColorModeValue('gray.200', 'gray.900')
   const textColor = useColorModeValue('gray.700', 'gray.100')
   const slides = [
     {
-      image: '/images/logo.png',
+      html: (<Container onMouseDown={toggleDrag('down')} id="gltests" height={"40vh"} width={'40vw'}>
+      </Container>),
       title: 'Me',
       description: "I'm a developer based in Brazil.",
     },

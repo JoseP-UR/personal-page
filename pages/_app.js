@@ -7,11 +7,21 @@ import { useRouter } from 'next/dist/client/router';
 
 export default function App({ Component, pageProps }) {
     const router = useRouter();
+
+    const getIcon = (path) => {
+        return router.pathname === path ? <CheckCircleIcon /> : <ArrowForwardIcon />
+    }
+
+    const getHref = (path) => {
+        return router.pathname === path ? "#" : path
+    }
+
     const menuItems = [
         {
             name: 'Home',
-            href: '/',
-            icon: router.pathname === '/' ? <CheckCircleIcon /> : <ArrowForwardIcon />,
+            path: '/',
+            href: getHref('/'),
+            icon: getIcon('/'),
             children: [
                 {
                     name: 'About',
@@ -22,13 +32,15 @@ export default function App({ Component, pageProps }) {
         },
         {
             name: 'Blog',
-            href: '/blog',
-            icon: router.pathname === '/blog' ? <CheckCircleIcon /> : <ArrowForwardIcon />
+            path: '/blog',
+            href: getHref('/blog'),
+            icon: getIcon('/blog'),
         },
         {
             name: 'Contact',
-            href: '/contact',
-            icon: router.pathname === '/contact' ? <CheckCircleIcon /> : <ArrowForwardIcon />
+            path: '/contact',
+            href: getHref('/contact'),
+            icon: getIcon('/contact'),
         },
     ];
 
