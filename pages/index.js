@@ -2,12 +2,9 @@ import Head from 'next/head'
 import SlideShow from '../components/slideShow'
 import { Container, Center, Heading, Text, Link } from '@chakra-ui/layout'
 import { useColorModeValue } from '@chakra-ui/color-mode'
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
+import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh, TextureLoader } from 'three';
 import { WEBGL } from 'three/examples/jsm/WebGL.js';
 import { useEffect, useRef } from 'react';
-import { render } from 'react-dom';
-
-
 
 export default function Home() {
   let cube = useRef(null);
@@ -16,18 +13,36 @@ export default function Home() {
   let camera = useRef(null);
   const animate = () => {
     requestAnimationFrame(animate);
-    cube.current.rotation.x += 0.01;
-    cube.current.rotation.y += 0.01;
+    cube.current.rotation.x += 0.009;
+    cube.current.rotation.y += 0.009;
     renderer.current.render(scene.current, camera.current);
   };
   const renderScene = () => {
     scene.current = new Scene();
     renderer.current = new WebGLRenderer();
-    const geometry = new BoxGeometry();
-    const material = new MeshBasicMaterial({ color: 0x00FFFF });
-    cube.current = new Mesh(geometry, material);
-    camera.current = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const geometry = new BoxGeometry(3, 3, 3);
+    const cubeFaces = [
+      new MeshBasicMaterial({ map: new TextureLoader().load('/images/php.png') }),
+      new MeshBasicMaterial({ color: 0x00ff00 }),
+      new MeshBasicMaterial({ color: 0x0000ff }),
+      new MeshBasicMaterial({ color: 0xffff00 }),
+      new MeshBasicMaterial({ color: 0x00ffff }),
+      new MeshBasicMaterial({ color: 0xff00ff }),
+    ];
+    const cubeEdges = [
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+      new MeshBasicMaterial({ color: 0xff0000, wireframe: true }),
+    ];
+
+    cube.current = new Mesh(geometry, cubeFaces, cubeEdges);
     const element = document.getElementById('gltests');
+    console.log(element.style.width);
+    console.log(element.style.height);
+    camera.current = new PerspectiveCamera(80, 1, 0.1, 1000);
     scene.current.add(cube.current);
 
     camera.current.position.z = 5;
@@ -46,17 +61,14 @@ export default function Home() {
 
   let initialPosition = {x: 0, y: 0}
   const drag = (e) => {
-    cube.current.rotation.x += (initialPosition.y - e.screenY) * 0.00001;
-    cube.current.rotation.y += (initialPosition.x - e.screenX) * 0.00001;
+    cube.current.rotation.x += (initialPosition.y - e.screenY) * 0.00009;
+    cube.current.rotation.y += (initialPosition.x - e.screenX) * 0.00009;
     renderer.current.render(scene.current, camera.current);
   }
 
-  let draggable = false
   const toggleDrag = (direction) => {
     const activated = direction === 'down'
     return (e) => {
-      draggable = activated
-      console.log(draggable)
 
       if (activated) {
         initialPosition = { x: e.screenX, y: e.screenY }
@@ -73,7 +85,11 @@ export default function Home() {
   const textColor = useColorModeValue('gray.700', 'gray.100')
   const slides = [
     {
-      html: (<Container onMouseDown={toggleDrag('down')} id="gltests" height={"40vh"} width={'40vw'}>
+      html: (<Container onMouseDown={toggleDrag('down')} id="gltests" style={
+        {
+          height: "40vh", width: '40vw'
+        }
+      }>
       </Container>),
       title: 'Me',
       description: "I'm a developer based in Brazil.",
